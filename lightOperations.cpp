@@ -83,7 +83,3 @@ int findNearestObject (geometry * shapes[], int numShapes, ray beam)
       
    return closestIndex;
    }
-
-void testFunction ()
-   {
-   }
