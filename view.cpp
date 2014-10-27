@@ -1,8 +1,8 @@
 //---------------------------------------------------------------
-// context class
+// view class
 #include "glm/glm.hpp"
 
-class context 
+class view 
    {
    public:
    glm::mat4 M;
@@ -10,12 +10,12 @@ class context
    glm::mat4 M_T;
    glm::mat4 M_T_inv;
  
-   context ();
+   view();
    void updateMatrix(glm::mat4);
    glm::mat4 pushTransform(glm::mat4);
    };
 
-context::context()
+view::view()
    {
    M = glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
    M_inv = M;
@@ -23,7 +23,7 @@ context::context()
    M_T_inv = M;
    }
 
-void context::updateMatrix(glm::mat4 newM)
+void view::updateMatrix(glm::mat4 newM)
    {
    M = newM;
    M_inv = glm::inverse(newM);
@@ -31,7 +31,7 @@ void context::updateMatrix(glm::mat4 newM)
    M_T_inv = glm::inverse(M_T);
    }
 
-glm::mat4 context::pushTransform(glm::mat4 transform)
+glm::mat4 view::pushTransform(glm::mat4 transform)
    {
    return transform * M; 
    }

@@ -5,7 +5,7 @@
 #include "variables.hpp"
 #include "geometry.hpp"
 #include "lightOperations.hpp"
-#include "context.cpp"
+#include "view.cpp"
 
 using namespace std;
 
