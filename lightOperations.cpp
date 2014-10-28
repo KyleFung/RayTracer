@@ -1,3 +1,8 @@
+ray generateRay (camera eye, int i, int j);
+glm::vec3 computeColor (light sources[], int numSources, geometry * shapes[], int numShapes, int currentShape, ray beam, camera eye, intersection junction);
+glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection junction);
+int findNearestObject (geometry * shapes[], int numShapes, ray beam);
+
 ray generateRay (camera eye, int i, int j)
    {
    ray beam;

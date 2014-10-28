@@ -1,11 +1,14 @@
 #include <iostream>
+#include <sstream>
 #include <fstream>
+#include <vector>
 #include <cmath>
 #include "glm/glm.hpp"
 #include "variables.hpp"
 #include "geometry.hpp"
-#include "lightOperations.hpp"
 #include "view.cpp"
+#include "lightOperations.cpp"
+#include "parseOperations.cpp"
 
 using namespace std;
 

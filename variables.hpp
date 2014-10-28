@@ -34,7 +34,13 @@ struct light
    glm::vec4 position;
    };
 
+struct vertex
+   {
+   glm::vec4 position;
+   };
+
 glm::vec4 eye;
 glm::vec3 direction;
 glm::vec3 up;
+float fov;
 #endif /* VARIABLES_H */

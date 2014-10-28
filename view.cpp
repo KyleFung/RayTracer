@@ -1,6 +1,5 @@
 //---------------------------------------------------------------
 // view class
-#include "glm/glm.hpp"
 
 class view 
    {
@@ -9,10 +8,17 @@ class view
    glm::mat4 M_inv; 
    glm::mat4 M_T;
    glm::mat4 M_T_inv;
+   std::vector<geometry *> shapes;
  
+   glm::vec4 ambient;
+   glm::vec4 diffuse;
+   glm::vec4 specular;
+   glm::vec4 emissive;
+
    view();
    void updateMatrix(glm::mat4);
    glm::mat4 pushTransform(glm::mat4);
+   ~view();
    };
 
 view::view()
@@ -35,3 +41,11 @@ glm::mat4 view::pushTransform(glm::mat4 transform)
    {
    return transform * M; 
    }
+
+view::~view()
+   {
+   for (int i = shapes.size(); i > 0; i--)
+      {
+      shapes[i]->~geometry();
+      }
+   } 
