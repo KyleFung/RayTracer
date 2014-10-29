@@ -1,18 +1,16 @@
-void parse(geometry ***viewIndex, light *lights, vertex *vertices);
+void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &vertexVector);
 void setCamera(string line);
-void createLight(string line);
-void createVertex(string line, vertex *vertices, int *index);
-void addTriangle(string line, geometry **shapeIndex);
-void addSphere(string line, geometry **shapeIndex, int *currentShape);
+void createLight(string line, vector<light> &lightVector);
+void createVertex(string line, vector<vertex> &vertexVector);
+void addTriangle(string line, stack<view> &pViewStack);
+void addSphere(string line, stack<view> &pViewStack);
 
-void parse(geometry ***viewIndex, light *lights, vertex *vertices)
+void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &vertexVector)
    {
    ifstream file;
    file.open ("shapes.txt");
    //if (!file.is_open()) return;
-   int currentVert = 0;
-   int currentView = 0;
-   int currentShape = 0;
+
    string line;
    while(getline(file, line))
       {
@@ -21,10 +19,10 @@ void parse(geometry ***viewIndex, light *lights, vertex *vertices)
       iss >> firstWord;
 
       if (firstWord == "camera") setCamera(line); 
-      if (firstWord == "point") createLight(line);
-      if (firstWord == "vertex") createVertex(line, vertices, &currentVert);
-      if (firstWord == "tri");
-      if (firstWord == "sphere") addSphere(line, viewIndex[currentView], &currentShape);
+      if (firstWord == "point") createLight(line, lightVector);
+      if (firstWord == "vertex") createVertex(line, vertexVector);
+      if (firstWord == "tri") addTriangle(line, viewStack);
+      if (firstWord == "sphere") addSphere(line, viewStack);
       if (firstWord == "push");
       if (firstWord == "pop");
 
@@ -62,7 +60,7 @@ void setCamera(string line)
    eye.w = 1.0;
    }
 
-void createLight(string line)
+void createLight(string line, vector<light> &lightVector)
    {
    cout << line << "\n";
    istringstream settings(line);
@@ -75,22 +73,27 @@ void createLight(string line)
    settings >> point.color.x;
    settings >> point.color.y;
    settings >> point.color.z;
+
+   lightVector.push_back(point);
    }
 
-void createVertex(string line, vertex *vertices, int *index)
+void createVertex(string line, vector<vertex> &vertexVector)
    {
    cout << line << "\n";
    istringstream iss(line);
    string hold;
    iss >> hold; 
-   iss >> vertices[*index].position.x;
-   iss >> vertices[*index].position.y;
-   iss >> vertices[*index].position.z;
-   vertices[*index].position.w = 1;
-   *index = *index + 1;
+
+   vertex addedVertex;
+   iss >> addedVertex.position.x;
+   iss >> addedVertex.position.y;
+   iss >> addedVertex.position.z;
+   addedVertex.position.w = 1;
+
+   vertexVector.push_back(addedVertex);
    }
 
-void addTriangle(string line, geometry **shapeIndex)
+void addTriangle(string line, stack<view> &viewStack)
    {
    cout << line << "\n";
    //TODO add this in after rearchitecting triangle
@@ -101,7 +104,7 @@ void addTriangle(string line, geometry **shapeIndex)
    iss >> hold;
    }
 
-void addSphere(string line, geometry **shapeIndex, int *currentShape)
+void addSphere(string line, stack<view> &viewStack)
    {
    cout << line << "\n";
    glm::vec4 position;
@@ -115,6 +118,5 @@ void addSphere(string line, geometry **shapeIndex, int *currentShape)
    iss >> radius;
    position.w = 1;
 
-   shapeIndex[*currentShape] = new sphere(radius, position);
-   *currentShape += 1;
+   viewStack.top().shapes.push_back(new sphere(radius, position));
    }

@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <stack>
 #include <cmath>
 #include "glm/glm.hpp"
 #include "variables.hpp"
@@ -14,6 +15,13 @@ using namespace std;
 
 int main ()
    {
+   stack<view> viewStack;
+   view trial;
+   viewStack.push(trial);
+   vector<light> lightVector;
+   vector<vertex> vertexVector;
+   parse(viewStack, lightVector, vertexVector);
+
    ofstream FH;
    FH.open ("image.ppm");
    FH << "P3" << endl << width << " " << height << endl << "255" << endl;
@@ -36,6 +44,7 @@ int main ()
    shapes = new geometry*[numShapes];
 
    shapes[0] = &ball;
+   //shapes[0] = viewStack.top().shapes[0];
    shapes[1] = &shape;
 
    int numLights = 2;
