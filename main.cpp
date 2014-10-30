@@ -32,20 +32,20 @@ int main ()
    //sphere ball2 = sphere (2.0, glm::vec4(0,2,3,1));
    //ball2.setReflectance(glm::vec3(1,1,1), glm::vec3(1,1,1), glm::vec3(0.5,0.5,0.5), 50);
 
-   triangle shape = triangle(glm::vec4(-1,-1,1,1), glm::vec4(1,1,1.5,1), glm::vec4(0,2,2,1));
-   shape.setReflectance(glm::vec3(1,1,1), glm::vec3(1,1,1), glm::vec3(0,0,10), 50);
+   //triangle shape = triangle(glm::vec4(-1,-1,1,1), glm::vec4(1,1,1.5,1), glm::vec4(0,2,2,1));
+   //viewStack.top().shapes[0]->setReflectance(glm::vec3(1,1,1), glm::vec3(1,1,1), glm::vec3(0,0,10), 50);
    
    camera eye = {glm::vec4(0,0,0,1), glm::vec3(0,0,1), glm::vec3(0,1,0), 0.785398163};
    light source = {glm::vec3(150,255,255), glm::vec4(20,20,10,1)};
    light source2 = {glm::vec3(0,255,255), glm::vec4(-20,20,-10,1)};
    
-   int numShapes = 2;
+   int numShapes = 1;
    geometry ** shapes;
    shapes = new geometry*[numShapes];
 
    shapes[0] = &ball;
    //shapes[0] = viewStack.top().shapes[0];
-   shapes[1] = &shape;
+   //shapes[1] = &shape;
 
    int numLights = 2;
    light * lights;

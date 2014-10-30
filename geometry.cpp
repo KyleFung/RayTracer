@@ -34,26 +34,33 @@ class triangle: public geometry
    glm::vec3 normal;
 
    public:
-   triangle (glm::vec4, glm::vec4, glm::vec4);
-   intersection Intersection(ray);
+   triangle (vertex *A, vertex *B, vertex *C);
+   intersection Intersection(ray beam);
    };
 
-triangle::triangle (glm::vec4 A, glm::vec4 B, glm::vec4 C)
+triangle::triangle (vertex *A, vertex *B, vertex *C)
    {
-   P1 = A;
-   P2 = B;
-   P3 = C;
+   P1 = A->position;
+   P2 = B->position;
+   P3 = C->position;
    }
 
 intersection triangle::Intersection(ray beam)
    {
    intersection junction;
+   //TODO:consider changing to non homogenized coordinates to not use this potentially expensive creation of objects
    // Vertices of triangle and ray origin in dehomogenized coordinates
    glm::vec3 eye = (1/beam.position.w) * glm::vec3(beam.position);
-   glm::vec3 A = (1/P1.w) * glm::vec3(P1);
-   glm::vec3 B = (1/P2.w) * glm::vec3(P2);
-   glm::vec3 C = (1/P3.w) * glm::vec3(P3);
+   glm::vec3 A = glm::vec3(P1);
+   glm::vec3 B = glm::vec3(P2);
+   glm::vec3 C = glm::vec3(P3);
 
+   //printf("P1: %f, %f, %f\n", P1.x, P1.y, P1.z);
+
+   //printf("B: %f, %f, %f\n", B.x, B.y, B.z);
+
+   //printf("C: %f, %f, %f\n", C.x, C.y, C.z);
+ 
    // Find plane - ray intersection
    glm::vec3 intersection;
    glm::vec3 normal = glm::normalize(glm::cross((B - A), (C - B)));

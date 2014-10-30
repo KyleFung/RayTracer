@@ -10,6 +10,9 @@ camera 0 -4 4 0 -1 0 0 1 1 45
 
 maxverts 8
 
+vertex -1 -1 +1
+vertex +1 +1 +1.5
+vertex  0 +2 +2
 vertex -1 -1 -1
 vertex +1 -1 -1 
 vertex +1 +1 -1 
@@ -30,6 +33,7 @@ pushTransform
 ambient .7 .7 1
 
 scale 2 1 .25
+tri 0 1 2
 tri 0 1 5 
 tri 0 5 4 
 tri 3 7 6

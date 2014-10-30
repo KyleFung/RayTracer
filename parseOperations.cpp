@@ -2,8 +2,10 @@ void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &v
 void setCamera(string line);
 void createLight(string line, vector<light> &lightVector);
 void createVertex(string line, vector<vertex> &vertexVector);
-void addTriangle(string line, stack<view> &pViewStack);
-void addSphere(string line, stack<view> &pViewStack);
+void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector);
+void addSphere(string line, stack<view> &viewStack);
+void pushView(stack<view> &viewStack);
+void popView(stack<view> &viewStack);
 
 void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &vertexVector)
    {
@@ -21,22 +23,11 @@ void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &v
       if (firstWord == "camera") setCamera(line); 
       if (firstWord == "point") createLight(line, lightVector);
       if (firstWord == "vertex") createVertex(line, vertexVector);
-      if (firstWord == "tri") addTriangle(line, viewStack);
+      if (firstWord == "tri") addTriangle(line, viewStack, vertexVector);
       if (firstWord == "sphere") addSphere(line, viewStack);
-      if (firstWord == "push");
-      if (firstWord == "pop");
+      //if (firstWord == "pushTransform") pushView(viewStack);
+      //if (firstWord == "popTransform") popView(viewStack);
 
-      //If statements to tell between numbers, shapes, and transforms
-      //Register into stack arrays
-      //IF comment THEN do nothing
-      //IF camera THEN set camera
-      //IF light THEN add light to list
-      //IF maxverts THEN size up vertex array
-      //IF vertex THEN initialize next vertex in array
-      //IF tri THEN initialize triangle in geometry array
-      //IF sphere THEN initialize sphere in geometry array
-      //IF push THEN push a copy of top to stack 
-      //IF pop THEN push top to context stack and pop top  
       }
    file.close(); 
    }
@@ -93,20 +84,23 @@ void createVertex(string line, vector<vertex> &vertexVector)
    vertexVector.push_back(addedVertex);
    }
 
-void addTriangle(string line, stack<view> &viewStack)
+void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector)
    {
-   cout << line << "\n";
-   //TODO add this in after rearchitecting triangle
-   //triangle shape = new triangle(); 
-   
    istringstream iss(line);
    string hold;
+   int A;
+   int B;
+   int C;
    iss >> hold;
+   iss >> A;
+   iss >> B;
+   iss >> C;
+
+   viewStack.top().shapes.push_back(new triangle(&vertexVector[A], &vertexVector[B], &vertexVector[C]));
    }
 
 void addSphere(string line, stack<view> &viewStack)
    {
-   cout << line << "\n";
    glm::vec4 position;
    float radius;
    istringstream iss(line);
@@ -119,4 +113,16 @@ void addSphere(string line, stack<view> &viewStack)
    position.w = 1;
 
    viewStack.top().shapes.push_back(new sphere(radius, position));
+   }
+
+void pushView(stack<view> &viewStack)
+   {
+   cout << "push" << "\n";
+   viewStack.push(viewStack.top());
+   }
+
+void popView(stack<view> &viewStack)
+   {
+   cout << "pop" << "\n";
+   viewStack.pop();
    }
