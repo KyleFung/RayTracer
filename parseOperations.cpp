@@ -1,14 +1,18 @@
-void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &vertexVector);
+void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector);
 void setCamera(string line);
 void createLight(string line, vector<light> &lightVector);
 void createVertex(string line, vector<vertex> &vertexVector);
 void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector);
 void addSphere(string line, stack<view> &viewStack);
 void pushView(stack<view> &viewStack);
-void popView(stack<view> &viewStack);
+void popView(stack<view> &viewStack, vector<view> &viewVector);
 
-void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &vertexVector)
+void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector)
    {
+   stack<view> viewStack;
+   view bottom;
+   viewStack.push(bottom);
+   
    ifstream file;
    file.open ("shapes.txt");
    //if (!file.is_open()) return;
@@ -25,8 +29,8 @@ void parse(stack<view> &viewStack, vector<light> &lightVector, vector<vertex> &v
       if (firstWord == "vertex") createVertex(line, vertexVector);
       if (firstWord == "tri") addTriangle(line, viewStack, vertexVector);
       if (firstWord == "sphere") addSphere(line, viewStack);
-      //if (firstWord == "pushTransform") pushView(viewStack);
-      //if (firstWord == "popTransform") popView(viewStack);
+      if (firstWord == "pushTransform") pushView(viewStack);
+      if (firstWord == "popTransform") popView(viewStack, viewVector);
 
       }
    file.close(); 
@@ -121,8 +125,9 @@ void pushView(stack<view> &viewStack)
    viewStack.push(viewStack.top());
    }
 
-void popView(stack<view> &viewStack)
+void popView(stack<view> &viewStack, vector<view> &viewVector)
    {
    cout << "pop" << "\n";
+   viewVector.push_back(viewStack.top());
    viewStack.pop();
    }

@@ -15,12 +15,10 @@ using namespace std;
 
 int main ()
    {
-   stack<view> viewStack;
-   view trial;
-   viewStack.push(trial);
+   vector<view> viewVector;
    vector<light> lightVector;
    vector<vertex> vertexVector;
-   parse(viewStack, lightVector, vertexVector);
+   parse(viewVector, lightVector, vertexVector);
 
    ofstream FH;
    FH.open ("image.ppm");

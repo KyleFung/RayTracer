@@ -28,6 +28,12 @@ struct intersection
    glm::vec3 normal;
    };
    
+struct shapeIndex
+   {
+   int view;
+   int shape;
+   };
+
 struct light
    {
    glm::vec3 color;

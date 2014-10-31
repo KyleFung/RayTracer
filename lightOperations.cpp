@@ -88,3 +88,27 @@ int findNearestObject (geometry * shapes[], int numShapes, ray beam)
       
    return closestIndex;
    }
+
+shapeIndex findNearestObject (vector<view> viewVector, ray beam)
+   {
+   shapeIndex closestShape;
+   closestShape.view = -1;
+   closestShape.shape = -1;
+   float closestDistance = 1000;
+
+   for (int i = 0; i < viewVector.size(); i++)
+      {
+      for (int j = 0; j < viewVector[i].shapes.size(); j++)
+         {
+         intersection junction = viewVector[i].shapes[j]->Intersection(beam);
+         if (junction.contact && junction.distance < closestDistance)
+            {
+            closestShape.view = i;
+            closestShape.shape = j;
+            closestDistance = junction.distance;
+            }
+         }
+      }
+
+   return closestShape;
+   }
