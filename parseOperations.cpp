@@ -6,6 +6,9 @@ void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVecto
 void addSphere(string line, stack<view> &viewStack);
 void pushView(stack<view> &viewStack);
 void popView(stack<view> &viewStack, vector<view> &viewVector);
+void pushScale(string line, stack<view> &viewStack);
+void pushTranslate(string line, stack<view> &viewStack);
+void pushRotate(string line, stack<view> &viewStack);
 
 void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector)
    {
@@ -31,6 +34,9 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       if (firstWord == "sphere") addSphere(line, viewStack);
       if (firstWord == "pushTransform") pushView(viewStack);
       if (firstWord == "popTransform") popView(viewStack, viewVector);
+      if (firstWord == "scale") pushScale(line, viewStack);
+      if (firstWord == "translate") pushTranslate(line, viewStack);
+      if (firstWord == "rotate") pushRotate(line, viewStack);
 
       }
    file.close(); 
@@ -119,6 +125,49 @@ void addSphere(string line, stack<view> &viewStack)
    viewStack.top().shapes.push_back(new sphere(radius, position));
    }
 
+void pushScale(string line, stack<view> &viewStack)
+   {
+   cout << line << "\n";
+   istringstream iss(line);
+   string hold;
+   float x, y, z;
+   iss >> hold;
+   iss >> x;
+   iss >> y;
+   iss >> z;
+
+   viewStack.top().updateMatrix(viewStack.top().M * scale(x, y, z));
+   }
+
+void pushTranslate(string line, stack<view> &viewStack)
+   {
+   cout << line << "\n";
+   istringstream iss(line);
+   string hold;
+   float x, y, z;
+   iss >> hold;
+   iss >> x;
+   iss >> y;
+   iss >> z;
+
+   viewStack.top().updateMatrix(viewStack.top().M * translate(x, y, z));
+   }
+
+void pushRotate(string line, stack<view> &viewStack)
+   {
+   cout << line << "\n";
+   istringstream iss(line);
+   string hold;
+   float x, y, z, theta;
+   iss >> hold;
+   iss >> x;
+   iss >> y;
+   iss >> z;
+   iss >> theta;
+
+   viewStack.top().updateMatrix(viewStack.top().M * glm::mat4(rotate(theta, glm::vec3(x, y, z))));
+   }
+
 void pushView(stack<view> &viewStack)
    {
    cout << "push" << "\n";
@@ -130,4 +179,4 @@ void popView(stack<view> &viewStack, vector<view> &viewVector)
    cout << "pop" << "\n";
    viewVector.push_back(viewStack.top());
    viewStack.pop();
-   }
+   } 

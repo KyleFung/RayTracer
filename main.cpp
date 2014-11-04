@@ -8,6 +8,7 @@
 #include "variables.hpp"
 #include "geometry.hpp"
 #include "view.cpp"
+#include "transforms.cpp"
 #include "lightOperations.cpp"
 #include "parseOperations.cpp"
 
