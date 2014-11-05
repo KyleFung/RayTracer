@@ -74,7 +74,7 @@ int main ()
          // case where a shape is hit
          else 
             {
-            glm::vec3 color = computeColor (lights, numLights, shapes, numShapes, nearestIndex, beam, eye, shapes[nearestIndex]->Intersection(beam));
+            glm::vec3 color = computeColor (lights, numLights, shapes, numShapes, nearestIndex, eye, shapes[nearestIndex]->Intersection(beam));
             pixels[j][i * 3] = color.x;
             pixels[j][i * 3 + 1] = color.y;
             pixels[j][i * 3 + 2] = color.z;
