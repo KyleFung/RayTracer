@@ -2,8 +2,8 @@
 #define VARIABLES_H
 using namespace std;
 
-const int width = 1000;
-const int height = 1000;
+const int width = 640;
+const int height = 480;
 const float EPSILON = 0.00001;
 
 struct ray
@@ -45,8 +45,5 @@ struct vertex
    glm::vec4 position;
    };
 
-glm::vec4 eye;
-glm::vec3 direction;
-glm::vec3 up;
 float fov;
 #endif /* VARIABLES_H */

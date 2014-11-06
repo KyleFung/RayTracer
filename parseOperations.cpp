@@ -1,5 +1,5 @@
-void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector);
-void setCamera(string line);
+void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, camera &eye);
+void setCamera(string line, camera &eye);
 void createLight(string line, vector<light> &lightVector);
 void createVertex(string line, vector<vertex> &vertexVector);
 void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector);
@@ -9,8 +9,9 @@ void popView(stack<view> &viewStack, vector<view> &viewVector);
 void pushScale(string line, stack<view> &viewStack);
 void pushTranslate(string line, stack<view> &viewStack);
 void pushRotate(string line, stack<view> &viewStack);
+void changeAmbient(string line, stack<view> &viewStack);
 
-void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector)
+void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, camera &eye)
    {
    stack<view> viewStack;
    view bottom;
@@ -27,7 +28,7 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       string firstWord;
       iss >> firstWord;
 
-      if (firstWord == "camera") setCamera(line); 
+      if (firstWord == "camera") setCamera(line, eye); 
       if (firstWord == "point") createLight(line, lightVector);
       if (firstWord == "vertex") createVertex(line, vertexVector);
       if (firstWord == "tri") addTriangle(line, viewStack, vertexVector);
@@ -37,28 +38,33 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       if (firstWord == "scale") pushScale(line, viewStack);
       if (firstWord == "translate") pushTranslate(line, viewStack);
       if (firstWord == "rotate") pushRotate(line, viewStack);
+      if (firstWord == "ambient") changeAmbient(line, viewStack);
 
       }
+   viewVector.push_back(viewStack.top());
    file.close(); 
    }
 
-void setCamera(string line)
+void setCamera(string line, camera &eye)
    {
    cout << line << "\n";
    istringstream settings(line);
    string hold;
+   float a, b, c;
    settings >> hold; 
-   settings >> eye.x;
-   settings >> eye.y;
-   settings >> eye.z;
-   settings >> direction.x;
-   settings >> direction.y;
-   settings >> direction.z;
-   settings >> up.x;
-   settings >> up.y;
-   settings >> up.z;
+   settings >> eye.position.x;
+   settings >> eye.position.y;
+   settings >> eye.position.z;
+   settings >> a;
+   settings >> b;
+   settings >> c;
+   settings >> eye.up.x;
+   settings >> eye.up.y;
+   settings >> eye.up.z;
    settings >> fov;
-   eye.w = 1.0;
+
+   eye.direction = glm::vec3(a, b, c) - glm::vec3(eye.position);
+   eye.position.w = 1.0;
    }
 
 void createLight(string line, vector<light> &lightVector)
@@ -168,6 +174,20 @@ void pushRotate(string line, stack<view> &viewStack)
    viewStack.top().updateMatrix(viewStack.top().M * glm::mat4(rotate(theta, glm::vec3(x, y, z))));
    }
 
+void changeAmbient(string line, stack<view> &viewStack)
+   {
+   cout << line << "\n";
+   istringstream iss(line);
+   string hold;
+   float x, y, z, theta;
+   iss >> hold;
+   iss >> x;
+   iss >> y;
+   iss >> z; 
+
+   viewStack.top().ambient = glm::vec3(x, y, z);
+   }
+
 void pushView(stack<view> &viewStack)
    {
    cout << "push" << "\n";
@@ -177,6 +197,6 @@ void pushView(stack<view> &viewStack)
 void popView(stack<view> &viewStack, vector<view> &viewVector)
    {
    cout << "pop" << "\n";
-   viewVector.push_back(viewStack.top());
+   viewVector.push_back(viewStack.top()); 
    viewStack.pop();
    } 

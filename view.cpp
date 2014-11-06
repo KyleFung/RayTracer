@@ -10,10 +10,10 @@ class view
    glm::mat4 M_T_inv;
    std::vector<geometry *> shapes;
  
-   glm::vec4 ambient;
-   glm::vec4 diffuse;
-   glm::vec4 specular;
-   glm::vec4 emissive;
+   glm::vec3 ambient;
+   glm::vec3 diffuse;
+   glm::vec3 specular;
+   glm::vec3 emissive;
 
    view();
    void updateMatrix(glm::mat4);
@@ -23,7 +23,7 @@ class view
 
 view::view()
    {
-   M = glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+   M = glm::mat4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
    M_inv = M;
    M_T = M;
    M_T_inv = M;
