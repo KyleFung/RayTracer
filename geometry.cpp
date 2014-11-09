@@ -48,6 +48,7 @@ triangle::triangle (vertex *A, vertex *B, vertex *C)
 intersection triangle::Intersection(ray beam)
    {
    intersection junction;
+   junction.contact = false;
    //TODO:consider changing to non homogenized coordinates to not use this potentially expensive creation of objects
    // Vertices of triangle and ray origin in dehomogenized coordinates
    glm::vec3 eye = (1/beam.position.w) * glm::vec3(beam.position);
@@ -125,6 +126,7 @@ void sphere::setCenter(glm::vec4 position)
 intersection sphere::Intersection(ray beam)
    {
    intersection junction;
+   junction.contact = false;
    // direction * direction 
    float a = glm::dot(beam.direction, beam.direction);
    // 2 * direction * (beamPosition - center)
