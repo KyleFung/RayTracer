@@ -24,6 +24,8 @@ struct intersection
    {
    bool contact;
    float distance;
+   int view;
+   int shape;
    glm::vec4 position;
    glm::vec3 normal;
    };
@@ -43,6 +45,13 @@ struct light
 struct vertex
    {
    glm::vec4 position;
+   };
+
+struct material
+   { 
+   glm::vec3 diffuse;
+   glm::vec3 specular; 
+   float shininess;
    };
 
 float fov;

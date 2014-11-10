@@ -40,14 +40,13 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
          { 
          //retVal += computeLight(eye, lightVector[i], *shapes[currentShape], junction); 
          } 
-      }
-   //retVal += shapes[currentShape]->ambient;
-   retVal += glm::vec3(255, 0, 0); 
+      } 
+   retVal += viewVector[junction.view].shapes[junction.shape]->ambient; 
    return glm::vec3(fminf(retVal.x, 255), fminf(retVal.y, 255), fminf(retVal.z, 255)); 
    }
 
 //Compute lighting calculation given an intersection and light source
-glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection junction)
+/*glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection junction)
    {
    glm::vec3 direction = glm::normalize((1/eye.position.w) * glm::vec3(eye.position) - (1/junction.position.w) * glm::vec3(junction.position));
    glm::vec3 vision = (1/eye.position.w) * glm::vec3(eye.position) - (1/junction.position.w) * glm::vec3(junction.position);
@@ -74,7 +73,7 @@ glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection 
    glm::vec3 retVal = lambert + phong;
    retVal = glm::vec3(fminf(retVal.x, 255), fminf(retVal.y, 255), fminf(retVal.z, 255));
    return retVal;
-   }
+   }*/
    
 //Find intersection closest to ray origin
 intersection findNearestIntersection (vector<view> viewVector, ray beam)
@@ -99,6 +98,8 @@ intersection findNearestIntersection (vector<view> viewVector, ray beam)
 
          if (junction.contact && junction.distance < closestIntersection.distance)
             { 
+            junction.view = i;
+            junction.shape = j;
             closestIntersection = junction;
             }
          }

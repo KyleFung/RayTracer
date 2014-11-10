@@ -10,10 +10,7 @@ class view
    glm::mat4 M_T_inv;
    std::vector<geometry *> shapes;
  
-   glm::vec3 ambient;
-   glm::vec3 diffuse;
-   glm::vec3 specular;
-   glm::vec3 emissive;
+   material lightProperties;
 
    view();
    void updateMatrix(glm::mat4);

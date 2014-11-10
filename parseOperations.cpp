@@ -2,21 +2,24 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
 void setCamera(string line, camera &eye);
 void createLight(string line, vector<light> &lightVector);
 void createVertex(string line, vector<vertex> &vertexVector);
-void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector);
-void addSphere(string line, stack<view> &viewStack);
-void pushView(stack<view> &viewStack);
+void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, glm::vec3 ambient);
+void addSphere(string line, stack<view> &viewStack, glm::vec3 ambient);
+void pushView(stack<view> &viewStack, material currentMaterial);
 void popView(stack<view> &viewStack, vector<view> &viewVector);
 void pushScale(string line, stack<view> &viewStack);
 void pushTranslate(string line, stack<view> &viewStack);
 void pushRotate(string line, stack<view> &viewStack);
-void changeAmbient(string line, stack<view> &viewStack);
+void changeAmbient(string line, glm::vec3 &givenAmbient);
 
 void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, camera &eye)
    {
    stack<view> viewStack;
+   glm::vec3 ambient = glm::vec3(0.1, 0.1, 0.1);
+   material currentMaterial = {glm::vec3(10, 10, 10), glm::vec3(20, 20, 20), 3.0}; 
    view bottom;
+   bottom.lightProperties = currentMaterial;
    viewStack.push(bottom);
-   
+
    ifstream file;
    file.open ("shapes.txt");
    //if (!file.is_open()) return;
@@ -28,21 +31,21 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       string firstWord;
       iss >> firstWord;
 
-      if (firstWord == "camera") setCamera(line, eye); 
+      if (firstWord == "camera") setCamera(line, eye);
       if (firstWord == "point") createLight(line, lightVector);
       if (firstWord == "vertex") createVertex(line, vertexVector);
-      if (firstWord == "tri") addTriangle(line, viewStack, vertexVector);
-      if (firstWord == "sphere") addSphere(line, viewStack);
-      if (firstWord == "pushTransform") pushView(viewStack);
+      if (firstWord == "tri") addTriangle(line, viewStack, vertexVector, ambient);
+      if (firstWord == "sphere") addSphere(line, viewStack, ambient);
+      if (firstWord == "pushTransform") pushView(viewStack, currentMaterial);
       if (firstWord == "popTransform") popView(viewStack, viewVector);
       if (firstWord == "scale") pushScale(line, viewStack);
       if (firstWord == "translate") pushTranslate(line, viewStack);
       if (firstWord == "rotate") pushRotate(line, viewStack);
-      if (firstWord == "ambient") changeAmbient(line, viewStack);
+      if (firstWord == "ambient") changeAmbient(line, ambient);
 
       }
    viewVector.push_back(viewStack.top());
-   file.close(); 
+   file.close();
    }
 
 void setCamera(string line, camera &eye)
@@ -100,7 +103,7 @@ void createVertex(string line, vector<vertex> &vertexVector)
    vertexVector.push_back(addedVertex);
    }
 
-void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector)
+void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, glm::vec3 givenAmbient)
    {
    istringstream iss(line);
    string hold;
@@ -112,10 +115,10 @@ void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVecto
    iss >> B;
    iss >> C;
 
-   viewStack.top().shapes.push_back(new triangle(&vertexVector[A], &vertexVector[B], &vertexVector[C]));
+   viewStack.top().shapes.push_back(new triangle(&vertexVector[A], &vertexVector[B], &vertexVector[C], givenAmbient));
    }
 
-void addSphere(string line, stack<view> &viewStack)
+void addSphere(string line, stack<view> &viewStack, glm::vec3 givenAmbient)
    {
    glm::vec4 position;
    float radius;
@@ -128,7 +131,7 @@ void addSphere(string line, stack<view> &viewStack)
    iss >> radius;
    position.w = 1;
 
-   viewStack.top().shapes.push_back(new sphere(radius, position));
+   viewStack.top().shapes.push_back(new sphere(radius, position, givenAmbient));
    }
 
 void pushScale(string line, stack<view> &viewStack)
@@ -174,24 +177,25 @@ void pushRotate(string line, stack<view> &viewStack)
    viewStack.top().updateMatrix(viewStack.top().M * glm::mat4(rotate(theta, glm::vec3(x, y, z))));
    }
 
-void changeAmbient(string line, stack<view> &viewStack)
+void changeAmbient(string line, glm::vec3 &ambient)
    {
    cout << line << "\n";
    istringstream iss(line);
    string hold;
-   float x, y, z, theta;
+   float x, y, z;
    iss >> hold;
    iss >> x;
    iss >> y;
    iss >> z; 
 
-   viewStack.top().ambient = glm::vec3(x, y, z);
+   ambient = glm::vec3(x * 255, y * 255, z * 255);
    }
 
-void pushView(stack<view> &viewStack)
+void pushView(stack<view> &viewStack, material currentMaterial)
    {
-   cout << "push" << "\n";
+   cout << "push" << "\n"; 
    viewStack.push(viewStack.top());
+   viewStack.top().lightProperties = currentMaterial;
    }
 
 void popView(stack<view> &viewStack, vector<view> &viewVector)

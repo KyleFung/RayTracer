@@ -4,24 +4,12 @@
 class geometry
    {
    public:
-   glm::vec3 diffuse;
-   glm::vec3 specular;
-   glm::vec3 ambient;
-   float shininess;
+   glm::vec3 ambient; 
    
    public:
-   virtual intersection Intersection(ray) = 0;
-   void setReflectance(glm::vec3, glm::vec3, glm::vec3, float);
+   virtual intersection Intersection(ray) = 0; 
    };
    
-void geometry::setReflectance(glm::vec3 initDiffuse, glm::vec3 initSpecular, glm::vec3 initAmbient, float initShininess)
-   {
-   diffuse = initDiffuse;
-   specular = initSpecular;
-   ambient = initAmbient;
-   shininess = initShininess;
-   }
-
 //---------------------------------------------------------------
 // triangle class
 
@@ -34,15 +22,16 @@ class triangle: public geometry
    glm::vec3 normal;
 
    public:
-   triangle (vertex *A, vertex *B, vertex *C);
+   triangle (vertex *A, vertex *B, vertex *C, glm::vec3 givenAmbient);
    intersection Intersection(ray beam);
    };
 
-triangle::triangle (vertex *A, vertex *B, vertex *C)
+triangle::triangle (vertex *A, vertex *B, vertex *C, glm::vec3 givenAmbient)
    {
    P1 = A->position;
    P2 = B->position;
    P3 = C->position;
+   ambient = givenAmbient;
    }
 
 intersection triangle::Intersection(ray beam)
@@ -101,16 +90,17 @@ class sphere: public geometry
    float radius;
 
    public:
-   sphere(float, glm::vec4);
+   sphere(float, glm::vec4, glm::vec3);
    intersection Intersection(ray);
    void setRadius(float);
    void setCenter(glm::vec4);
    };
 
-sphere::sphere (float length, glm::vec4 position)
+sphere::sphere (float length, glm::vec4 position, glm::vec3 givenAmbient)
    {
    setRadius(length);
    setCenter(position);
+   ambient = givenAmbient;
    }
 
 void sphere::setRadius(float length)

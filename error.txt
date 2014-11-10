@@ -1,8 +1,0 @@
-Creating view
-camera -4 0 1 0 0 1 0 0 1 45
-ambient .1 .1 .1
-point 4 0 4 .5 .5 .5
-vertex -1 -1 0 
-vertex +1 -1 0
-vertex +1 +1 0
-vertex -1 +1 0
