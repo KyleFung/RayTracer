@@ -22,8 +22,7 @@ struct camera
    
 struct intersection
    {
-   bool contact;
-   float distance;
+   bool contact; 
    int view;
    int shape;
    glm::vec4 position;

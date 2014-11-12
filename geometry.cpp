@@ -74,8 +74,7 @@ intersection triangle::Intersection(ray beam)
 
    // Scale normal by -1 if it is not facing the right direction relative to the ray
    if (glm::dot(normal, beam.direction) > 0) normal = glm::vec3(normal.x * -1, normal.y * -1, normal.z * -1);
-   junction.normal = normal;
-   junction.distance = glm::length(t * beam.direction);
+   junction.normal = normal; 
    return junction;
    }
 
@@ -138,15 +137,13 @@ intersection sphere::Intersection(ray beam)
 
    if (tminus >= 0)
       {
-      junction.position = glm::vec4((tminus * beam.direction) + eye, 1);
-      junction.distance = glm::length(tminus * beam.direction);
+      junction.position = glm::vec4((tminus * beam.direction) + eye, 1); 
       junction.contact = true;
       }
    
    else if (tplus > 0)
       {
-      junction.position = glm::vec4((tplus * beam.direction) + eye, 1);
-      junction.distance = glm::length(tplus * beam.direction);
+      junction.position = glm::vec4((tplus * beam.direction) + eye, 1); 
       junction.contact = true;
       }
    else

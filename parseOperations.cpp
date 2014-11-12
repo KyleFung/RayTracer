@@ -44,7 +44,8 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       if (firstWord == "ambient") changeAmbient(line, ambient);
 
       }
-   viewVector.push_back(viewStack.top());
+
+   viewVector.push_back(viewStack.top()); 
    file.close();
    }
 

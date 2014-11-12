@@ -45,6 +45,39 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
    return glm::vec3(fminf(retVal.x, 255), fminf(retVal.y, 255), fminf(retVal.z, 255)); 
    }
 
+//Find intersection closest to ray origin
+intersection findNearestIntersection (vector<view> viewVector, ray beam)
+   {
+   intersection closestIntersection;
+   closestIntersection.contact = false;
+   float closestDistance = 1000;
+
+   for (int i = 0; i < viewVector.size(); i++)
+      {
+      //Do ray transformation 
+      ray transformedRay = beam;
+      transformedRay.direction = glm::vec3(viewVector[i].M_inv * glm::vec4(beam.direction, 0)); 
+      transformedRay.position = viewVector[i].M_inv * beam.position; 
+
+      for (int j = 0; j < viewVector[i].shapes.size(); j++)
+         {
+         //Convert intersection position and normal back to normal coordinates 
+         intersection junction = viewVector[i].shapes[j]->Intersection(transformedRay);
+         junction.position = viewVector[i].M * junction.position;
+         junction.normal = glm::vec3(viewVector[i].M_T_inv * glm::vec4(junction.normal, 0)); 
+
+         if (junction.contact && glm::length(glm::vec3(junction.position - beam.position)) < closestDistance)
+            {
+            junction.view = i;
+            junction.shape = j;
+            closestIntersection = junction;
+            closestDistance = glm::length(glm::vec3(junction.position - beam.position));
+            }
+         }
+      } 
+   return closestIntersection;
+   }
+
 //Compute lighting calculation given an intersection and light source
 /*glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection junction)
    {
@@ -73,36 +106,4 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
    glm::vec3 retVal = lambert + phong;
    retVal = glm::vec3(fminf(retVal.x, 255), fminf(retVal.y, 255), fminf(retVal.z, 255));
    return retVal;
-   }*/
-   
-//Find intersection closest to ray origin
-intersection findNearestIntersection (vector<view> viewVector, ray beam)
-   {
-   intersection closestIntersection;
-   closestIntersection.distance = 1000;
-   closestIntersection.contact = false;
-
-   for (int i = 0; i < viewVector.size(); i++)
-      {
-      //Do ray transformation 
-      ray transformedRay = beam;
-      transformedRay.direction = glm::vec3(viewVector[i].M_inv * glm::vec4(beam.direction, 0)); 
-      transformedRay.position = viewVector[i].M_inv * beam.position; 
-
-      for (int j = 0; j < viewVector[i].shapes.size(); j++)
-         {
-         //Convert intersection position and normal back to normal coordinates 
-         intersection junction = viewVector[i].shapes[j]->Intersection(transformedRay);
-         junction.position = viewVector[i].M * junction.position;
-         junction.normal = glm::vec3(viewVector[i].M_T_inv * glm::vec4(junction.normal, 0));
-
-         if (junction.contact && junction.distance < closestIntersection.distance)
-            { 
-            junction.view = i;
-            junction.shape = j;
-            closestIntersection = junction;
-            }
-         }
-      } 
-   return closestIntersection;
-   }
+   }*/ 
