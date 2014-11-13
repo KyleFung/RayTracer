@@ -4,7 +4,7 @@
 class geometry
    {
    public:
-   material *lightProperties;
+   material lightProperties;
    
    public:
    virtual intersection Intersection(ray) = 0; 
@@ -22,11 +22,11 @@ class triangle: public geometry
    glm::vec3 normal;
 
    public:
-   triangle (vertex *A, vertex *B, vertex *C, material *givenProperties);
+   triangle (vertex *A, vertex *B, vertex *C, material givenProperties);
    intersection Intersection(ray beam);
    };
 
-triangle::triangle (vertex *A, vertex *B, vertex *C, material *givenProperties)
+triangle::triangle (vertex *A, vertex *B, vertex *C, material givenProperties)
    {
    P1 = A->position;
    P2 = B->position;
@@ -83,13 +83,13 @@ class sphere: public geometry
    float radius;
 
    public:
-   sphere(float, glm::vec4, material *);
+   sphere(float, glm::vec4, material);
    intersection Intersection(ray);
    void setRadius(float);
    void setCenter(glm::vec4);
    };
 
-sphere::sphere (float length, glm::vec4 position, material *givenProperties)
+sphere::sphere (float length, glm::vec4 position, material givenProperties)
    {
    setRadius(length);
    setCenter(position);

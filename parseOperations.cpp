@@ -2,8 +2,8 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
 void setCamera(string line, camera &eye);
 void createLight(string line, vector<light> &lightVector);
 void createVertex(string line, vector<vertex> &vertexVector);
-void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, material *givenMaterial);
-void addSphere(string line, stack<view> &viewStack, material *givenMaterial);
+void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, material givenMaterial);
+void addSphere(string line, stack<view> &viewStack, material givenMaterial);
 void pushView(stack<view> &viewStack);
 void popView(stack<view> &viewStack, vector<view> &viewVector);
 void pushScale(string line, stack<view> &viewStack);
@@ -20,7 +20,7 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
    view bottom; 
    viewStack.push(bottom);
 
-   material defaultMaterial = {glm::vec3(0.1, 0.1, 0.1), glm::vec3(10, 10, 10), glm::vec3(20, 20, 20), 3.0}; 
+   material defaultMaterial = {glm::vec3(1.0, 1.0, 1.0), glm::vec3(10, 10, 10), glm::vec3(20, 20, 20), 3.0};
    materialVector.push_back(defaultMaterial);
    bool shapeWasLastSeen = false;
 
@@ -50,8 +50,8 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       if (firstWord == "camera") setCamera(line, eye);
       else if (firstWord == "point") createLight(line, lightVector);
       else if (firstWord == "vertex") createVertex(line, vertexVector);
-      else if (firstWord == "tri") addTriangle(line, viewStack, vertexVector, &materialVector[materialVector.size() - 1]);
-      else if (firstWord == "sphere") addSphere(line, viewStack, &materialVector[materialVector.size() - 1]);
+      else if (firstWord == "tri") addTriangle(line, viewStack, vertexVector, materialVector[materialVector.size() - 1]);
+      else if (firstWord == "sphere") addSphere(line, viewStack, materialVector[materialVector.size() - 1]);
       else if (firstWord == "pushTransform") pushView(viewStack);
       else if (firstWord == "popTransform") popView(viewStack, viewVector);
       else if (firstWord == "scale") pushScale(line, viewStack);
@@ -123,7 +123,7 @@ void createVertex(string line, vector<vertex> &vertexVector)
    vertexVector.push_back(addedVertex);
    }
 
-void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, material *givenMaterial)
+void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, material givenMaterial)
    {
    istringstream iss(line);
    string hold;
@@ -138,7 +138,7 @@ void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVecto
    viewStack.top().shapes.push_back(new triangle(&vertexVector[A], &vertexVector[B], &vertexVector[C], givenMaterial));
    }
 
-void addSphere(string line, stack<view> &viewStack, material *givenMaterial)
+void addSphere(string line, stack<view> &viewStack, material givenMaterial)
    {
    glm::vec4 position;
    float radius;
