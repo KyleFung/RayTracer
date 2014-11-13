@@ -41,7 +41,7 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
          //retVal += computeLight(eye, lightVector[i], *shapes[currentShape], junction); 
          } 
       } 
-   retVal += viewVector[junction.view].shapes[junction.shape]->ambient; 
+   retVal += viewVector[junction.view].shapes[junction.shape]->lightProperties->ambient;
    return glm::vec3(fminf(retVal.x, 255), fminf(retVal.y, 255), fminf(retVal.z, 255)); 
    }
 

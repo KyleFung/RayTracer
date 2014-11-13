@@ -10,8 +10,6 @@ class view
    glm::mat4 M_T_inv;
    std::vector<geometry *> shapes;
  
-   material lightProperties;
-
    view();
    void updateMatrix(glm::mat4);
    glm::mat4 pushTransform(glm::mat4);

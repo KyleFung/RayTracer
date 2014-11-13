@@ -4,7 +4,7 @@
 class geometry
    {
    public:
-   glm::vec3 ambient; 
+   material *lightProperties;
    
    public:
    virtual intersection Intersection(ray) = 0; 
@@ -22,16 +22,16 @@ class triangle: public geometry
    glm::vec3 normal;
 
    public:
-   triangle (vertex *A, vertex *B, vertex *C, glm::vec3 givenAmbient);
+   triangle (vertex *A, vertex *B, vertex *C, material *givenProperties);
    intersection Intersection(ray beam);
    };
 
-triangle::triangle (vertex *A, vertex *B, vertex *C, glm::vec3 givenAmbient)
+triangle::triangle (vertex *A, vertex *B, vertex *C, material *givenProperties)
    {
    P1 = A->position;
    P2 = B->position;
    P3 = C->position;
-   ambient = givenAmbient;
+   lightProperties = givenProperties;
    }
 
 intersection triangle::Intersection(ray beam)
@@ -45,12 +45,6 @@ intersection triangle::Intersection(ray beam)
    glm::vec3 B = glm::vec3(P2);
    glm::vec3 C = glm::vec3(P3);
 
-   //printf("P1: %f, %f, %f\n", P1.x, P1.y, P1.z);
-
-   //printf("B: %f, %f, %f\n", B.x, B.y, B.z);
-
-   //printf("C: %f, %f, %f\n", C.x, C.y, C.z);
- 
    // Find plane - ray intersection
    glm::vec3 intersection;
    glm::vec3 normal = glm::normalize(glm::cross((B - A), (C - B)));
@@ -89,17 +83,17 @@ class sphere: public geometry
    float radius;
 
    public:
-   sphere(float, glm::vec4, glm::vec3);
+   sphere(float, glm::vec4, material *);
    intersection Intersection(ray);
    void setRadius(float);
    void setCenter(glm::vec4);
    };
 
-sphere::sphere (float length, glm::vec4 position, glm::vec3 givenAmbient)
+sphere::sphere (float length, glm::vec4 position, material *givenProperties)
    {
    setRadius(length);
    setCenter(position);
-   ambient = givenAmbient;
+   lightProperties = givenProperties;
    }
 
 void sphere::setRadius(float length)

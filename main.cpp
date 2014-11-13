@@ -20,8 +20,9 @@ int main ()
    vector<view> viewVector;
    vector<light> lightVector;
    vector<vertex> vertexVector;
+   vector<material> materialVector;
    camera eye;
-   parse(viewVector, lightVector, vertexVector, eye);
+   parse(viewVector, lightVector, vertexVector, materialVector, eye);
 
    eye.fovy = 0.785398163; 
 
