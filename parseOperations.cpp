@@ -26,7 +26,7 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
 
    ifstream file;
    file.open ("shapes.txt");
-   //if (!file.is_open()) return;
+   if (!file.is_open()) return;
 
    string line;
    while(getline(file, line))
@@ -70,7 +70,6 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
 
 void setCamera(string line, camera &eye)
    {
-   cout << line << "\n";
    istringstream settings(line);
    string hold;
    float a, b, c;
@@ -92,7 +91,6 @@ void setCamera(string line, camera &eye)
 
 void createLight(string line, vector<light> &lightVector)
    {
-   cout << line << "\n";
    istringstream settings(line);
    light point;
    string hold;
@@ -103,13 +101,13 @@ void createLight(string line, vector<light> &lightVector)
    settings >> point.color.x;
    settings >> point.color.y;
    settings >> point.color.z;
+   point.position.w = 1;
 
    lightVector.push_back(point);
    }
 
 void createVertex(string line, vector<vertex> &vertexVector)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    iss >> hold; 
@@ -156,7 +154,6 @@ void addSphere(string line, stack<view> &viewStack, material givenMaterial)
 
 void pushScale(string line, stack<view> &viewStack)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    float x, y, z;
@@ -170,7 +167,6 @@ void pushScale(string line, stack<view> &viewStack)
 
 void pushTranslate(string line, stack<view> &viewStack)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    float x, y, z;
@@ -184,7 +180,6 @@ void pushTranslate(string line, stack<view> &viewStack)
 
 void pushRotate(string line, stack<view> &viewStack)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    float x, y, z, theta;
@@ -199,7 +194,6 @@ void pushRotate(string line, stack<view> &viewStack)
 
 void changeAmbient(string line, material &givenMaterial)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    float x, y, z;
@@ -213,7 +207,6 @@ void changeAmbient(string line, material &givenMaterial)
 
 void changeDiffuse(string line, material &givenMaterial)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    float x, y, z;
@@ -227,7 +220,6 @@ void changeDiffuse(string line, material &givenMaterial)
 
 void changeSpecular(string line, material &givenMaterial)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    float x, y, z;
@@ -241,7 +233,6 @@ void changeSpecular(string line, material &givenMaterial)
 
 void changeShininess(string line, material &givenMaterial)
    {
-   cout << line << "\n";
    istringstream iss(line);
    string hold;
    float shininess;
@@ -253,13 +244,11 @@ void changeShininess(string line, material &givenMaterial)
 
 void pushView(stack<view> &viewStack)
    {
-   cout << "push" << "\n"; 
    viewStack.push(viewStack.top()); 
    }
 
 void popView(stack<view> &viewStack, vector<view> &viewVector)
    {
-   cout << "pop" << "\n";
    viewVector.push_back(viewStack.top()); 
    viewStack.pop();
    } 
