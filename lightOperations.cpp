@@ -32,13 +32,13 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
    for (int i = 0; i < lightVector.size(); i++)
       {
       glm::vec3 toSource = 1/(lightVector[i].position.w) * glm::vec3(lightVector[i].position) -  1/(junction.position.w) * glm::vec3(junction.position);
-      ray pathToSource = {toSource, junction.position + glm::vec4(toSource.x * EPSILON, toSource.y * EPSILON, toSource.z * EPSILON, 0)}; 
+      ray pathToSource = {toSource, junction.position + glm::vec4(toSource.x * EPSILON, toSource.y * EPSILON, toSource.z * EPSILON, 0)};
 
       intersection testShadows = findNearestIntersection(viewVector, pathToSource); 
       //Case where there are no intersections
       if (!testShadows.contact) 
          { 
-         //retVal += computeLight(eye, lightVector[i], *shapes[currentShape], junction); 
+         retVal += computeLight(eye, lightVector[i], *viewVector[junction.view].shapes[junction.shape], junction);
          } 
       } 
    retVal += viewVector[junction.view].shapes[junction.shape]->lightProperties.ambient;
@@ -79,7 +79,7 @@ intersection findNearestIntersection (vector<view> viewVector, ray beam)
    }
 
 //Compute lighting calculation given an intersection and light source
-/*glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection junction)
+glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection junction)
    {
    glm::vec3 direction = glm::normalize((1/eye.position.w) * glm::vec3(eye.position) - (1/junction.position.w) * glm::vec3(junction.position));
    glm::vec3 vision = (1/eye.position.w) * glm::vec3(eye.position) - (1/junction.position.w) * glm::vec3(junction.position);
@@ -93,17 +93,17 @@ intersection findNearestIntersection (vector<view> viewVector, ray beam)
 
    float nDotL = glm::dot(glm::normalize(junction.normal), direction);
 
-   glm::vec3 lambert = glm::vec3(source.color.x * shape.diffuse.x * fmaxf(nDotL, 0.0),
-                                 source.color.y * shape.diffuse.y * fmaxf(nDotL, 0.0),
-                                 source.color.z * shape.diffuse.z * fmaxf(nDotL, 0.0));  
+   glm::vec3 lambert = glm::vec3(source.color.x * shape.lightProperties.diffuse.x * fmaxf(nDotL, 0.0),
+                                 source.color.y * shape.lightProperties.diffuse.y * fmaxf(nDotL, 0.0),
+                                 source.color.z * shape.lightProperties.diffuse.z * fmaxf(nDotL, 0.0));
 
    float nDotH = glm::dot(junction.normal, halfvec); 
 
-   glm::vec3 phong = glm::vec3(source.color.x * shape.specular.x * pow(fmaxf(nDotH, 0.0), shape.shininess),
-                               source.color.y * shape.specular.y * pow(fmaxf(nDotH, 0.0), shape.shininess),
-                               source.color.z * shape.specular.z * pow(fmaxf(nDotH, 0.0), shape.shininess));
+   glm::vec3 phong = glm::vec3(source.color.x * shape.lightProperties.specular.x * pow(fmaxf(nDotH, 0.0), shape.lightProperties.shininess),
+                               source.color.y * shape.lightProperties.specular.y * pow(fmaxf(nDotH, 0.0), shape.lightProperties.shininess),
+                               source.color.z * shape.lightProperties.specular.z * pow(fmaxf(nDotH, 0.0), shape.lightProperties.shininess));
 
    glm::vec3 retVal = lambert + phong;
    retVal = glm::vec3(fminf(retVal.x, 255), fminf(retVal.y, 255), fminf(retVal.z, 255));
    return retVal;
-   }*/ 
+   }
