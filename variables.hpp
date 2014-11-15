@@ -4,7 +4,7 @@ using namespace std;
 
 const int width = 640;
 const int height = 480;
-const float EPSILON = 0.00001;
+const float EPSILON = 0.0001;
 
 struct ray
    {
@@ -51,6 +51,7 @@ struct material
    glm::vec3 ambient;
    glm::vec3 diffuse;
    glm::vec3 specular; 
+   glm::vec3 emissive;
    float shininess;
    };
 

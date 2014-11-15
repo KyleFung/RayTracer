@@ -12,6 +12,7 @@ void pushRotate(string line, stack<view> &viewStack);
 void changeAmbient(string line, material &givenMaterial);
 void changeDiffuse(string line, material &givenMaterial);
 void changeSpecular(string line, material &givenMaterial);
+void changeEmissive(string line, material &givenMaterial);
 void changeShininess(string line, material &givenMaterial);
 
 void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, vector<material> &materialVector, camera &eye)
@@ -20,7 +21,7 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
    view bottom; 
    viewStack.push(bottom);
 
-   material defaultMaterial = {glm::vec3(1.0, 1.0, 1.0), glm::vec3(10, 10, 10), glm::vec3(20, 20, 20), 3.0};
+   material defaultMaterial = {glm::vec3(1.0, 1.0, 1.0), glm::vec3(10, 10, 10), glm::vec3(20, 20, 20), glm::vec3(1.0, 1.0, 1.0), 3.0};
    materialVector.push_back(defaultMaterial);
    bool shapeWasLastSeen = false;
 
@@ -35,7 +36,7 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       string firstWord;
       iss >> firstWord;
 
-      if ((firstWord == "ambient" || firstWord == "diffuse" || firstWord == "specular" || firstWord == "shininess") 
+      if ((firstWord == "ambient" || firstWord == "diffuse" || firstWord == "specular" || firstWord == "emission" || firstWord == "shininess")
             && shapeWasLastSeen)
          {
          shapeWasLastSeen = false;
@@ -60,11 +61,11 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       else if (firstWord == "ambient") changeAmbient(line, materialVector[materialVector.size() - 1]);
       else if (firstWord == "diffuse") changeDiffuse(line, materialVector[materialVector.size() - 1]);
       else if (firstWord == "specular") changeSpecular(line, materialVector[materialVector.size() - 1]);
+      else if (firstWord == "emission") changeEmissive(line, materialVector[materialVector.size() - 1]);
       else if (firstWord == "shininess") changeShininess(line, materialVector[materialVector.size() - 1]);
-
       }
 
-   viewVector.push_back(viewStack.top()); 
+   viewVector.push_back(viewStack.top());
    file.close();
    }
 
@@ -73,6 +74,7 @@ void setCamera(string line, camera &eye)
    istringstream settings(line);
    string hold;
    float a, b, c;
+   float fovyDegrees;
    settings >> hold; 
    settings >> eye.position.x;
    settings >> eye.position.y;
@@ -83,9 +85,11 @@ void setCamera(string line, camera &eye)
    settings >> eye.up.x;
    settings >> eye.up.y;
    settings >> eye.up.z;
+   settings >> fovyDegrees;
 
    eye.direction = glm::vec3(a, b, c) - glm::vec3(eye.position);
    eye.position.w = 1.0;
+   eye.fovy = fovyDegrees * 0.0174532925;
    }
 
 void createLight(string line, vector<light> &lightVector)
@@ -93,14 +97,16 @@ void createLight(string line, vector<light> &lightVector)
    istringstream settings(line);
    light point;
    string hold;
+   float r, g, b;
    settings >> hold;
    settings >> point.position.x;
    settings >> point.position.y;
    settings >> point.position.z;
-   settings >> point.color.x;
-   settings >> point.color.y;
-   settings >> point.color.z;
+   settings >> r;
+   settings >> g;
+   settings >> b;
    point.position.w = 1;
+   point.color = glm::vec3(r * 255, g * 255, b * 255);
 
    lightVector.push_back(point);
    }
@@ -214,7 +220,7 @@ void changeDiffuse(string line, material &givenMaterial)
    iss >> y;
    iss >> z;
 
-   givenMaterial.diffuse = glm::vec3(x * 255, y * 255, z * 255);
+   givenMaterial.diffuse = glm::vec3(x, y, z);
    }
 
 void changeSpecular(string line, material &givenMaterial)
@@ -227,7 +233,20 @@ void changeSpecular(string line, material &givenMaterial)
    iss >> y;
    iss >> z;
 
-   givenMaterial.specular = glm::vec3(x * 255, y * 255, z * 255);
+   givenMaterial.specular = glm::vec3(x, y, z);
+   }
+
+void changeEmissive(string line, material &givenMaterial)
+   {
+   istringstream iss(line);
+   string hold;
+   float x, y, z;
+   iss >> hold;
+   iss >> x;
+   iss >> y;
+   iss >> z;
+
+   givenMaterial.emissive = glm::vec3(x * 255, y * 255, z * 255);
    }
 
 void changeShininess(string line, material &givenMaterial)
