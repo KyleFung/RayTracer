@@ -83,7 +83,6 @@ void setCamera(string line, camera &eye)
    settings >> eye.up.x;
    settings >> eye.up.y;
    settings >> eye.up.z;
-   settings >> fov;
 
    eye.direction = glm::vec3(a, b, c) - glm::vec3(eye.position);
    eye.position.w = 1.0;
@@ -200,7 +199,7 @@ void changeAmbient(string line, material &givenMaterial)
    iss >> hold;
    iss >> x;
    iss >> y;
-   iss >> z; 
+   iss >> z;
 
    givenMaterial.ambient = glm::vec3(x * 255, y * 255, z * 255);
    }
@@ -213,7 +212,7 @@ void changeDiffuse(string line, material &givenMaterial)
    iss >> hold;
    iss >> x;
    iss >> y;
-   iss >> z; 
+   iss >> z;
 
    givenMaterial.diffuse = glm::vec3(x * 255, y * 255, z * 255);
    }
@@ -226,7 +225,7 @@ void changeSpecular(string line, material &givenMaterial)
    iss >> hold;
    iss >> x;
    iss >> y;
-   iss >> z; 
+   iss >> z;
 
    givenMaterial.specular = glm::vec3(x * 255, y * 255, z * 255);
    }
@@ -239,16 +238,16 @@ void changeShininess(string line, material &givenMaterial)
    iss >> hold;
    iss >> shininess;
 
-   givenMaterial.shininess = shininess; 
+   givenMaterial.shininess = shininess;
    }
 
 void pushView(stack<view> &viewStack)
    {
-   viewStack.push(viewStack.top()); 
+   viewStack.push(viewStack.top());
    }
 
 void popView(stack<view> &viewStack, vector<view> &viewVector)
    {
    viewVector.push_back(viewStack.top()); 
    viewStack.pop();
-   } 
+   }

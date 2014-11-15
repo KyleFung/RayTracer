@@ -4,7 +4,7 @@ using namespace std;
 
 const int width = 640;
 const int height = 480;
-const float EPSILON = 0.01;
+const float EPSILON = 0.00001;
 
 struct ray
    {
@@ -54,5 +54,4 @@ struct material
    float shininess;
    };
 
-float fov;
 #endif /* VARIABLES_H */

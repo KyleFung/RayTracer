@@ -8,15 +8,15 @@ intersection findNearestIntersection (vector<view> viewVector, ray beam);
 ray generateRay (camera eye, int i, int j)
    {
    ray beam;
-   float heightScreen = tan(eye.fovy);
-   float widthScreen = heightScreen * (width/height);
+   float heightScreen = (float) tan((double) eye.fovy * 0.5);
+   float widthScreen = (float) tan((double) eye.fovy * 0.5) * ((float) width/ (float) height);
 
-   float alpha = (i - (width / 2.0)) / (width / 2.0);
-   float beta = (-1.0) * (j - (height /2.0)) / (height / 2.0);
+   float alpha = ((float)i - (width * 0.5)) / (width * 0.5);
+   float beta = (-1.0) * ((float)j - (height * 0.5)) / (height * 0.5);
    alpha *= widthScreen;
    beta *= heightScreen;
    
-   beam.direction = glm::normalize(eye.direction) + alpha * glm::normalize((glm::cross(eye.direction, eye.up))) + beta * glm::normalize(eye.up);
+   beam.direction = glm::normalize(eye.direction) + alpha * glm::cross(glm::normalize(eye.direction), glm::normalize(eye.up)) + beta * glm::normalize(eye.up);
    beam.position = eye.position;
    
    return beam;

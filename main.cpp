@@ -24,7 +24,7 @@ int main ()
    camera eye;
    parse(viewVector, lightVector, vertexVector, materialVector, eye);
 
-   eye.fovy = 0.785398163; 
+   eye.fovy = 0.785398163;
 
    //Initialize pixel buffer
    int **pixels = new int*[height];
