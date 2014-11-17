@@ -1,6 +1,7 @@
 void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, vector<material> &materialVector, camera &eye);
 void setCamera(string line, camera &eye);
-void createLight(string line, vector<light> &lightVector);
+void createLightPoint(string line, vector<light> &lightVector);
+void createLightDirectional(string line, vector<light> &lightVector);
 void createVertex(string line, vector<vertex> &vertexVector);
 void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, material givenMaterial);
 void addSphere(string line, stack<view> &viewStack, material givenMaterial);
@@ -49,7 +50,8 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
          }
 
       if (firstWord == "camera") setCamera(line, eye);
-      else if (firstWord == "point") createLight(line, lightVector);
+      else if (firstWord == "point") createLightPoint(line, lightVector);
+      else if (firstWord == "directional") createLightDirectional(line, lightVector);
       else if (firstWord == "vertex") createVertex(line, vertexVector);
       else if (firstWord == "tri") addTriangle(line, viewStack, vertexVector, materialVector[materialVector.size() - 1]);
       else if (firstWord == "sphere") addSphere(line, viewStack, materialVector[materialVector.size() - 1]);
@@ -92,7 +94,7 @@ void setCamera(string line, camera &eye)
    eye.fovy = fovyDegrees * 0.0174532925;
    }
 
-void createLight(string line, vector<light> &lightVector)
+void createLightPoint(string line, vector<light> &lightVector)
    {
    istringstream settings(line);
    light point;
@@ -109,6 +111,25 @@ void createLight(string line, vector<light> &lightVector)
    point.color = glm::vec3(r * 255, g * 255, b * 255);
 
    lightVector.push_back(point);
+   }
+
+void createLightDirectional(string line, vector<light> &lightVector)
+   {
+   istringstream settings(line);
+   light directional;
+   string hold;
+   float r, g, b;
+   settings >> hold;
+   settings >> directional.position.x;
+   settings >> directional.position.y;
+   settings >> directional.position.z;
+   settings >> r;
+   settings >> g;
+   settings >> b;
+   directional.position.w = 0;
+   directional.color = glm::vec3(r * 255, g * 255, b * 255);
+
+   lightVector.push_back(directional);
    }
 
 void createVertex(string line, vector<vertex> &vertexVector)
