@@ -15,6 +15,7 @@ void changeDiffuse(string line, material &givenMaterial);
 void changeSpecular(string line, material &givenMaterial);
 void changeEmissive(string line, material &givenMaterial);
 void changeShininess(string line, material &givenMaterial);
+void changeDepth(string line);
 
 void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, vector<material> &materialVector, camera &eye)
    {
@@ -65,6 +66,7 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       else if (firstWord == "specular") changeSpecular(line, materialVector[materialVector.size() - 1]);
       else if (firstWord == "emission") changeEmissive(line, materialVector[materialVector.size() - 1]);
       else if (firstWord == "shininess") changeShininess(line, materialVector[materialVector.size() - 1]);
+      else if (firstWord == "maxdepth"); changeDepth(line);
       }
 
    viewVector.push_back(viewStack.top());
@@ -279,6 +281,14 @@ void changeShininess(string line, material &givenMaterial)
    iss >> shininess;
 
    givenMaterial.shininess = shininess;
+   }
+
+void changeDepth(string line)
+   {
+   istringstream iss(line);
+   string hold;
+   iss >> hold;
+   iss >> maxDepth;
    }
 
 void pushView(stack<view> &viewStack)

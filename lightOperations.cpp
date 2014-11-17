@@ -42,9 +42,9 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
 
       intersection testShadows = findNearestIntersection(viewVector, pathToSource);
       //Case where there are no intersections or the closest intersection is behind a point light
-      if (!testShadows.contact || lightVector[i].position.w &&
+      if (!testShadows.contact || (lightVector[i].position.w &&
             (glm::length(glm::vec3(testShadows.position) - glm::vec3(junction.position))
-            > glm::length(glm::vec3(testShadows.position) - glm::vec3(lightVector[i].position))))
+            >= glm::length(glm::vec3(junction.position) - glm::vec3(lightVector[i].position)))))
          {
          retVal += computeLight(eye, lightVector[i], *viewVector[junction.view].shapes[junction.shape], junction);
          }
@@ -53,7 +53,7 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
    retVal += viewVector[junction.view].shapes[junction.shape]->lightProperties.emissive;
 
    //Generate a reflection ray and then find closest intersection and then compute color
-   if (recursionDepth <= MAX_DEPTH)
+   if (recursionDepth < maxDepth)
       {
       glm::vec3 reflectionDirection = ((float) 2.0 * junction.normal) - (glm::vec3(eye.position) - glm::vec3(junction.position));
       ray reflectionRay = { reflectionDirection, junction.position + glm::vec4(reflectionDirection.x * EPSILON, reflectionDirection.y * EPSILON, reflectionDirection.z * EPSILON, 0)};
