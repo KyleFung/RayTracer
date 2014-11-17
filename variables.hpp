@@ -20,16 +20,16 @@ struct camera
    glm::vec3 up;
    float fovy;
    };
-   
+
 struct intersection
    {
-   bool contact; 
+   bool contact;
    int view;
    int shape;
    glm::vec4 position;
    glm::vec3 normal;
    };
-   
+
 struct shapeIndex
    {
    int view;
@@ -48,10 +48,10 @@ struct vertex
    };
 
 struct material
-   { 
+   {
    glm::vec3 ambient;
    glm::vec3 diffuse;
-   glm::vec3 specular; 
+   glm::vec3 specular;
    glm::vec3 emissive;
    float shininess;
    };

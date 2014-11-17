@@ -36,18 +36,18 @@ int main ()
       {
       for (int i = 0; i < width; i++)
          {
-         ray beam = generateRay (eye, i, j); 
+         ray beam = generateRay (eye, i, j);
          glm::vec3 color = computeColor(lightVector, viewVector, eye, findNearestIntersection(viewVector, beam), 0);
          pixels[j][i * 3] = color.x;
          pixels[j][i * 3 + 1] = color.y;
-         pixels[j][i * 3 + 2] = color.z; 
+         pixels[j][i * 3 + 2] = color.z;
          }
       }
 
    //Write pixel buffer to ppm file
    ofstream FH;
    FH.open ("image.ppm");
-   FH << "P3" << endl << width << " " << height << endl << "255" << endl; 
+   FH << "P3" << endl << width << " " << height << endl << "255" << endl;
 
    for (int i = 0; i < height; i++)
       {

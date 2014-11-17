@@ -5,11 +5,11 @@ class geometry
    {
    public:
    material lightProperties;
-   
+
    public:
-   virtual intersection Intersection(ray) = 0; 
+   virtual intersection Intersection(ray) = 0;
    };
-   
+
 //---------------------------------------------------------------
 // triangle class
 
@@ -68,7 +68,7 @@ intersection triangle::Intersection(ray beam)
 
    // Scale normal by -1 if it is not facing the right direction relative to the ray
    if (glm::dot(normal, beam.direction) > 0) normal = glm::vec3(normal.x * -1, normal.y * -1, normal.z * -1);
-   junction.normal = normal; 
+   junction.normal = normal;
    return junction;
    }
 
@@ -110,15 +110,15 @@ intersection sphere::Intersection(ray beam)
    {
    intersection junction;
    junction.contact = false;
-   // direction * direction 
+   // direction * direction
    float a = glm::dot(beam.direction, beam.direction);
    // 2 * direction * (beamPosition - center)
    float b = 2 * glm::dot(beam.direction, (glm::vec3(beam.position)/beam.position.w) - (glm::vec3(center)/center.w));
    // (beamPosition - center) * (beamPosition - center) - radius ^2
-   float c = glm::dot((glm::vec3(beam.position)/beam.position.w) - (glm::vec3(center)/center.w), 
+   float c = glm::dot((glm::vec3(beam.position)/beam.position.w) - (glm::vec3(center)/center.w),
       (glm::vec3(beam.position)/beam.position.w) - (glm::vec3(center)/center.w)) - radius * radius;
    float discriminant = (b * b) - (4 * a * c);
-   
+
    if (discriminant < 0)
       {
       junction.contact = false;
@@ -131,13 +131,13 @@ intersection sphere::Intersection(ray beam)
 
    if (tminus >= 0)
       {
-      junction.position = glm::vec4((tminus * beam.direction) + eye, 1); 
+      junction.position = glm::vec4((tminus * beam.direction) + eye, 1);
       junction.contact = true;
       }
-   
+
    else if (tplus > 0)
       {
-      junction.position = glm::vec4((tplus * beam.direction) + eye, 1); 
+      junction.position = glm::vec4((tplus * beam.direction) + eye, 1);
       junction.contact = true;
       }
    else

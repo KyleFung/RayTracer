@@ -17,9 +17,9 @@ void changeEmissive(string line, material &givenMaterial);
 void changeShininess(string line, material &givenMaterial);
 
 void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, vector<material> &materialVector, camera &eye)
-   { 
+   {
    stack<view> viewStack;
-   view bottom; 
+   view bottom;
    viewStack.push(bottom);
 
    material defaultMaterial = {glm::vec3(1.0, 1.0, 1.0), glm::vec3(10, 10, 10), glm::vec3(20, 20, 20), glm::vec3(1.0, 1.0, 1.0), 3.0};
@@ -77,7 +77,7 @@ void setCamera(string line, camera &eye)
    string hold;
    float a, b, c;
    float fovyDegrees;
-   settings >> hold; 
+   settings >> hold;
    settings >> eye.position.x;
    settings >> eye.position.y;
    settings >> eye.position.z;
@@ -136,7 +136,7 @@ void createVertex(string line, vector<vertex> &vertexVector)
    {
    istringstream iss(line);
    string hold;
-   iss >> hold; 
+   iss >> hold;
 
    vertex addedVertex;
    iss >> addedVertex.position.x;
@@ -288,6 +288,6 @@ void pushView(stack<view> &viewStack)
 
 void popView(stack<view> &viewStack, vector<view> &viewVector)
    {
-   viewVector.push_back(viewStack.top()); 
+   viewVector.push_back(viewStack.top());
    viewStack.pop();
    }
