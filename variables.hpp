@@ -4,7 +4,8 @@ using namespace std;
 
 const int width = 640;
 const int height = 480;
-const float EPSILON = 0.0001;
+const float EPSILON = 0.00005;
+const int MAX_DEPTH = 5;
 
 struct ray
    {

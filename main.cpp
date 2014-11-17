@@ -37,7 +37,7 @@ int main ()
       for (int i = 0; i < width; i++)
          {
          ray beam = generateRay (eye, i, j); 
-         glm::vec3 color = computeColor(lightVector, viewVector, eye, findNearestIntersection(viewVector, beam));
+         glm::vec3 color = computeColor(lightVector, viewVector, eye, findNearestIntersection(viewVector, beam), 0);
          pixels[j][i * 3] = color.x;
          pixels[j][i * 3 + 1] = color.y;
          pixels[j][i * 3 + 2] = color.z; 
