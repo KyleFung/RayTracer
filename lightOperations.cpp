@@ -1,8 +1,3 @@
-ray generateRay (camera eye, int i, int j);
-glm::vec3 computeColor (light sources[], int numSources, geometry * shapes[], int numShapes, int currentShape, camera eye, intersection junction, int recursionDepth);
-glm::vec3 computeLight (camera eye, light source, geometry &shape, intersection junction);
-intersection findNearestIntersection (vector<view> viewVector, ray beam);
-
 //Generate a ray struct positioned at the eye going through the (i,j)th pixel
 ray generateRay (camera eye, int i, int j)
    {
@@ -53,11 +48,12 @@ glm::vec3 computeColor (vector<light> lightVector, vector<view> viewVector, came
    retVal += viewVector[junction.view].shapes[junction.shape]->lightProperties.emissive;
 
    //Generate a reflection ray and then find closest intersection and then compute color
-   if (recursionDepth < maxDepth)
+   if (recursionDepth < maxDepth)//&& viewVector[junction.view].shapes[junction.shape]->lightProperties.specular.length() != 0)
       {
       glm::vec3 reflectionDirection = ((float) 2.0 * junction.normal) - (glm::vec3(eye.position) - glm::vec3(junction.position));
       ray reflectionRay = { reflectionDirection, junction.position + glm::vec4(reflectionDirection.x * EPSILON, reflectionDirection.y * EPSILON, reflectionDirection.z * EPSILON, 0)};
-      retVal += computeColor(lightVector, viewVector, eye, findNearestIntersection(viewVector, reflectionRay), recursionDepth + 1);
+      retVal += viewVector[junction.view].shapes[junction.shape]->lightProperties.specular *
+                  computeColor(lightVector, viewVector, eye, findNearestIntersection(viewVector, reflectionRay), recursionDepth + 1);
       }
 
    return glm::vec3(fminf(retVal.x, 255), fminf(retVal.y, 255), fminf(retVal.z, 255));

@@ -5,12 +5,12 @@
 #include <stack>
 #include <cmath>
 #include "glm/glm.hpp"
-#include "variables.hpp"
-#include "geometry.hpp"
-#include "view.cpp"
-#include "transforms.cpp"
-#include "lightOperations.cpp"
-#include "parseOperations.cpp"
+#include "variables.h"
+#include "geometry.h"
+#include "view.h"
+#include "transforms.h"
+#include "lightOperations.h"
+#include "parseOperations.h"
 
 using namespace std;
 

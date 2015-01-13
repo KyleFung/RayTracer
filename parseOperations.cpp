@@ -1,22 +1,3 @@
-void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, vector<material> &materialVector, camera &eye);
-void setCamera(string line, camera &eye);
-void createLightPoint(string line, vector<light> &lightVector);
-void createLightDirectional(string line, vector<light> &lightVector);
-void createVertex(string line, vector<vertex> &vertexVector);
-void addTriangle(string line, stack<view> &viewStack, vector<vertex> vertexVector, material givenMaterial);
-void addSphere(string line, stack<view> &viewStack, material givenMaterial);
-void pushView(stack<view> &viewStack);
-void popView(stack<view> &viewStack, vector<view> &viewVector);
-void pushScale(string line, stack<view> &viewStack);
-void pushTranslate(string line, stack<view> &viewStack);
-void pushRotate(string line, stack<view> &viewStack);
-void changeAmbient(string line, material &givenMaterial);
-void changeDiffuse(string line, material &givenMaterial);
-void changeSpecular(string line, material &givenMaterial);
-void changeEmissive(string line, material &givenMaterial);
-void changeShininess(string line, material &givenMaterial);
-void changeDepth(string line);
-
 void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> &vertexVector, vector<material> &materialVector, camera &eye)
    {
    stack<view> viewStack;
@@ -66,7 +47,7 @@ void parse(vector<view> &viewVector, vector<light> &lightVector, vector<vertex> 
       else if (firstWord == "specular") changeSpecular(line, materialVector[materialVector.size() - 1]);
       else if (firstWord == "emission") changeEmissive(line, materialVector[materialVector.size() - 1]);
       else if (firstWord == "shininess") changeShininess(line, materialVector[materialVector.size() - 1]);
-      else if (firstWord == "maxdepth"); changeDepth(line);
+      else if (firstWord == "maxdepth") changeDepth(line);
       }
 
    viewVector.push_back(viewStack.top());
@@ -289,6 +270,7 @@ void changeDepth(string line)
    string hold;
    iss >> hold;
    iss >> maxDepth;
+   cout << "Max is " << maxDepth << "\n";
    }
 
 void pushView(stack<view> &viewStack)
