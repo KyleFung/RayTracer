@@ -5,4 +5,9 @@ A software implementation of a recursive ray tracer to render scenes of triangle
 Source code: https://github.com/KyleFung/RayTracer
 
 Sample output:
-![alt tag](http://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/2000px-Smiley.svg.png)
+<br>
+![alt tag](http://www.mediafire.com/convkey/ecd6/ccu7c3c18s4je93zg.jpg)
+<br>
+![alt tag](http://www.mediafire.com/convkey/ce5b/k8enk0nr14dugkjzg.jpg)
+<br>
+![alt tag](http://www.mediafire.com/convkey/970e/o5l3zczyekahy2tzg.jpg)
